@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import './Registro.css';
 import { Link } from 'react-router-dom';
 
@@ -8,6 +8,9 @@ export const Registro = () => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [response, setResponse] = useState(null);
+    const [registrationSuccess, setRegistrationSuccess] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
 
     const handleCreateUser = (user) => {
         const userData = {
@@ -26,9 +29,16 @@ export const Registro = () => {
         })
         .then((response) => response.json())
         .then((data) => setResponse(data));
+        setRegistrationSuccess(true);
     };
 
-    
+    useEffect(() => {
+        if (registrationSuccess) {
+            // Recargar la página
+            window.location.reload();
+        }
+    }, [registrationSuccess]);
+
     // Función para imprimir los datos del formulario en la consola
     const logFormData = (data) => {
         console.log("Datos del formulario:", data);
@@ -36,6 +46,12 @@ export const Registro = () => {
 
     const RegisterFormData = () =>{
         event.preventDefault();
+        // Verificar si todos los campos están llenos
+        if (firstName.trim() === '' || lastName.trim() === '' || email.trim() === '' || pass.trim() === '') {
+            // Puedes mostrar un mensaje al usuario o simplemente salir de la función
+            setErrorMessage("Por favor, completa todos los campos");
+            return;
+    }
         let user = {
             firstName,
             lastName,
@@ -44,6 +60,8 @@ export const Registro = () => {
         }
         handleCreateUser(user)
         console.log(user)
+        // Limpiar el mensaje de error después de registro exitoso
+        setErrorMessage('');
     }
 
 
@@ -75,11 +93,12 @@ export const Registro = () => {
                     <input type="password" name="passRegister" id="password" value={pass} placeholder="Contraseña" onChange={(e) => setPass(e.target.value)} />
                 </div>
 
-                <input type="submit" value="Registrar" className="register__btn" onClick={RegisterFormData} />
+                <input type="submit" value="Registrar" className="register__btn" onClick={RegisterFormData} disabled={registrationSuccess} />
+                {errorMessage && (
+                    <p className="error-messageRegister">{errorMessage}</p>
+                )}
                 <Link to='/' className="register__link">Iniciar Sesión</Link>
             </form>
-
-            {/* {response && (<p>Respuesta de la API: {JSON.stringify(response)}</p>)} */}
         </div>
     );
 }

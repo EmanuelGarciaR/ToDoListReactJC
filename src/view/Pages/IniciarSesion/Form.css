@@ -114,3 +114,8 @@ form{
     font-size: 20px;
     color: #b6713c;
 }
+.error-message{
+    color: #b6713c;
+    font-size: 16px;
+    padding: 5px;
+}

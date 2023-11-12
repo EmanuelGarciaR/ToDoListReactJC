@@ -115,3 +115,8 @@ form{
     font-size: 20px;
     color: #b6713c;
 }
+.error-messageRegister{
+    color: #b6713c;
+    font-size: 16px;
+    padding: 5px;
+}

@@ -9,9 +9,6 @@ export const Form = () => {
     const [loginError, setLoginError] = useState(null);
     const navigate = useNavigate();
 
-    // const redirigirUser = () =>{
-    //     // navigate('home')
-    // }
 
     const handleLogin = (event) => {
         event.preventDefault();
@@ -36,7 +33,8 @@ export const Form = () => {
                 dispatch({type:"LOGIN_USER", payload: data.user})
                 navigate('/home')
             }).catch(error=>{
-                setLoginError(error)
+                console.error("Error durante la autenticación:", error);
+                setLoginError("Credenciales incorrectas. Verifica tu email y contraseña.")
             })
     }
 
