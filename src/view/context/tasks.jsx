@@ -5,8 +5,14 @@ export const TaskContext = createContext()
 
 export const TaskProvider = ({ children }) => {
     const [state, dispatch] = useReducer (reducer, initialState)
+    const handleLoginUser = (userId) => {
+        dispatch({ type: "LOGIN_USER", payload: { userId } });
+    };
+    const addTask = (task) => {
+        dispatch({ type: "ADD_TASK", payload: task });
+    };
     return(
-        <TaskContext.Provider value={{ state, dispatch}}>
+        <TaskContext.Provider value={{ state, dispatch, handleLoginUser, addTask }}>
             {children}
         </TaskContext.Provider>
     )
