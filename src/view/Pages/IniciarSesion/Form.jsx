@@ -1,20 +1,19 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { TaskContext } from "../../context/tasks";
-import './Form.css';
+import { TaskContext } from "../../context/user";
+import "./Form.css";
 
 export const Form = () => {
-    const{state,dispatch} = useContext(TaskContext)
+    const { state, dispatch, handleLoginUser } = useContext(TaskContext);
     const [loginError, setLoginError] = useState(null);
     const navigate = useNavigate();
 
-
     const handleLogin = (event) => {
         event.preventDefault();
-        fetch('https://birsbane-numbat-zjcf.1.us-1.fl0.io/api/user/auth', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+        fetch("https://birsbane-numbat-zjcf.1.us-1.fl0.io/api/user/auth", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 email: event.target.elements.email.value,
                 password: event.target.elements.password.value,
@@ -22,22 +21,23 @@ export const Form = () => {
         })
             .then((response) => {
                 if (response.ok) {
-
-                    return response.json()
-
+                    return response.json();
                 } else {
-                    throw new Error('Credenciales incorrectas')
+                    throw new Error("Credenciales incorrectas");
                 }
             })
             .then((data) => {
-                dispatch({type:"LOGIN_USER", payload: data.user})
-                navigate('/home')
-            }).catch(error=>{
-                console.error("Error durante la autenticación:", error);
-                setLoginError("Credenciales incorrectas. Verifica tu email y contraseña.")
+                // dispatch({type:"LOGIN_USER", payload: data.user})
+                handleLoginUser(data.user);
+                navigate("/home");
             })
-    }
-
+            .catch((error) => {
+                console.error("Error durante la autenticación:", error);
+                setLoginError(
+                    "Credenciales incorrectas. Verifica tu email y contraseña."
+                );
+            });
+    };
 
     return (
         <div className="container">
@@ -51,22 +51,32 @@ export const Form = () => {
 
                 <div className="form__input">
                     <i className="fas fa-lock"></i>
-                    <input type="password" name="password" id="password" placeholder="Ingresa tu contraseña" />
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        placeholder="Ingresa tu contraseña"
+                    />
                 </div>
 
-                <button type="submit" className="btn__form" >Ingresar</button>
+                <button type="submit" className="btn__form">
+                    Ingresar
+                </button>
 
+                {loginError && <p className="error-message">{loginError}</p>}
 
-                {loginError && (
-                    <p className="error-message">{loginError}</p>
-                )}
-
-                <Link to='registro' className="register__link">Registrarse</Link>
+                <Link to="registro" className="register__link">
+                    Registrarse
+                </Link>
             </form>
 
             <div className="containerDos">
-                <img className="form__logo" src="https://i.postimg.cc/85n0q9SN/logo-jovenes-Creativos.png" alt="Jovenes Creativos" />
+                <img
+                    className="form__logo"
+                    src="https://i.postimg.cc/85n0q9SN/logo-jovenes-Creativos.png"
+                    alt="Jovenes Creativos"
+                />
             </div>
         </div>
-    )
-}
+    );
+};

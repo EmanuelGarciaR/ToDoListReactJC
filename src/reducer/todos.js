@@ -1,7 +1,5 @@
 export const initialState = {
-    user: {
-    id: null
-    }
+    user: null,
 }
 export function reducer(state, action) {
     switch (action.type) {
@@ -9,18 +7,9 @@ export function reducer(state, action) {
             //guardamos en localstorage
             globalThis.localStorage.setItem("USER", JSON.stringify(action.payload))
             return { ...state, 
-                user:{
-                    id:action.payload.id,
-                }, 
+                user: action.payload,
             };
-        //action payload es la información que necesita la acción
-
-        //guardar solo el userId
-        // case "USER_ID":
-        //     return {
-        //         ...state,
-        //         userId: action.payload,
-        //     };
+        
         default:
             return state;
     }
