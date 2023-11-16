@@ -13,7 +13,6 @@ dist-ssr
 *.local
 
 context
-services
 
 # Editor directories and files
 .vscode/*
