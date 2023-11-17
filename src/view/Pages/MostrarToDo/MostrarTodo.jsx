@@ -5,7 +5,7 @@ import { TaskContext } from "../../context/user";
 import "./MostrarTodo.css";
 
 export const GetToDos = () => {
-    const { init, dispatch, getTodo } = useContext(TodoContext);
+    const { init, dispatch, getTodo, deleteTodo } = useContext(TodoContext);
     const { state } = useContext(TaskContext)
     const { task } = init;
     const { user } = state;
@@ -22,6 +22,22 @@ export const GetToDos = () => {
 
         Datafetch();
     }, [user._id]);
+
+    const handleDelete = (todoId) => {
+        deleteTodo(todoId);
+    }
+
+    // Al cerrar sesión, después de limpiar el contexto local
+    // const handleLogout = async () => {
+    //     try {
+    //         await api.delete('/eliminar-tareas');  // Sustituye con tu endpoint real
+    //     } catch (error) {
+    //         console.error('Error al eliminar tareas en el servidor:', error);
+    //     }
+
+    //     // Otras acciones de cierre de sesión...
+    // };
+
     return (
         task && Array.isArray(task) ? (
             task.map((todo) => (
@@ -30,6 +46,7 @@ export const GetToDos = () => {
                         <h3 className="todo__title">{todo.name}</h3>
                         <div className="todo__description">{todo.description}</div>
                         <div className="todo__date">{todo.finishDate}</div>
+                        <button onClick={() => handleDelete(todo._id)}>Eliminar</button>
                     </div>
                 </div>
             ))
