@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { TaskContext } from "../../context/user";
 import { GetToDos } from "../MostrarToDo/MostrarTodo";
 import { TodoContext } from "../../context/todoContext";
+import "./ToDos.css"
 
 export function ToDos() {
   const { state, dispatch } = useContext(TaskContext);
@@ -64,37 +65,37 @@ export function ToDos() {
 
   return (
     <>
-    <div>
-      <form onSubmit={TaskData}>
-        <input
+    <div className="container">
+      <form className="container__task" onSubmit={TaskData}>
+        <input className="task__input"
           type="text"
           placeholder="Ingresa el Título de la tarea"
           name="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <input
+        <input className="task__input"
           type="text"
           placeholder="Ingresa la descripción de la tarea"
           name="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <input
+        <input className="task__input"
           type="date"
           placeholder="Ingresa la fecha para finalizar"
           name="finishDate"
           value={finishDate}
           onChange={(e) => setFinishDate(e.target.value)}
         />
-        <input
+        <input className="task__input-check"
           type="checkbox"
           name="isCompleted"
           checked={isCompleted}
           onChange={(e) => setIsCompleted(e.target.checked)}
         />
         {toDoError && <p className="error-message">{toDoError}</p>}
-        <input type="submit" value="Crear Tarea" />
+        <input type="submit" value="Crear Tarea" className="task__btn" />
       </form>
     </div>
 

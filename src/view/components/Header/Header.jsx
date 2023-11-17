@@ -9,12 +9,12 @@ export const Header = ()=>{
                 </div>
 
                 <div className="container__title">
-                    <h1>MyToDoList</h1>
+                    <h1 className='title'>MyToDoList</h1>
                 </div>
-                <ul>
+                <ul className='container__list'>
                     {/* Hacer función para eliminar session con On CliCK */}
-                    <li><Link to='/' >Cerrar Sesion</Link></li>
-                    <li><Link to='/registro'>Registro</Link></li>
+                    <li ><Link className='item__link' to='/' >Cerrar Sesion</Link></li>
+                    <li ><Link className='item__link' to='/registro'>Registro</Link></li>
                 </ul>
             </header>
         </div>

@@ -25,15 +25,36 @@ header{
     justify-content: space-between;
     color: #000;
 }
-header ul{
+.container__list{
     list-style: none;
     display: flex;
     align-items: center;
     gap: 20px;
+    width: 30%;
+}
+
+.container__title{
+    color: rgb(246, 164, 164)545;
+    width: 50%;
+    padding: 40px;
+    text-align: center;
+}
+.title{
+    color: #6a4a31;
 }
 
 .container__logo {
     width: 20%;
+}
+
+.item__link{
+    color: #ffcea8;
+    padding: 40px;
+}
+.item__link:hover{
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 
