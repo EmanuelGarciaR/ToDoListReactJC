@@ -23,8 +23,8 @@ export const GetToDos = () => {
         Datafetch();
     }, [user._id]);
 
-    const handleDelete = (todoId) => {
-        deleteTodo(todoId);
+    const handleDelete = (dispatch,todoId) => {
+        deleteTodo(dispatch,todoId);
     }
 
     // Al cerrar sesión, después de limpiar el contexto local

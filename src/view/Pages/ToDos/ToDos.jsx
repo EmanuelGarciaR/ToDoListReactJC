@@ -52,9 +52,14 @@ export function ToDos() {
         const data = await response.json();
         console.log("Tarea creada con éxito:", data.todo);
         addToDo(data.todo);
+        //Limpiar el formulario después de agregar una tarea
+        setName("");
+        setDescription("");
+        setFinishDate("");
+        setIsCompleted(false);
+        setToDoError(null);
       } else {
-        console.error("Error al crear la tarea", response.statusText);
-        // Tratar el caso en que no se pueda crear la tarea
+        console.error("Error al crear la tarea");
       }
     } catch (error) {
       console.error("Error de red:", error);
