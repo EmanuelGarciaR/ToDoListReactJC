@@ -6,11 +6,11 @@ import "./ToDos.css"
 
 export function ToDos() {
   const { state, dispatch } = useContext(TaskContext);
-  const { addToDo } = useContext(TodoContext);
+  const { addToDo, markAsCompleted } = useContext(TodoContext);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [finishDate, setFinishDate] = useState("");
-  const [isCompleted, setIsCompleted] = useState(false);
+  const [isCompleted, setIsCompleted] = useState({});
   const [toDoError, setToDoError] = useState(null);
 
   const TaskData = async (event) => {
@@ -30,7 +30,7 @@ export function ToDos() {
       name,
       description,
       finishDate,
-      isCompleted,
+      isCompleted: false,
       userId: state.user._id,
     };
 
@@ -63,48 +63,96 @@ export function ToDos() {
       }
     } catch (error) {
       console.error("Error de red:", error);
-      // Tratar el caso en que ocurra un error de red
     }
   };
-  // console.log("userId en el estado global:", state.user._id);
+
+  const handleMarkAsCompleted = async (todoId) => {
+    try {
+        // Marcar la tarea como completada en la API
+        const response = await fetch(`https://birsbane-numbat-zjcf.1.us-1.fl0.io/api/todo/${todoId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ isCompleted: true }),
+        });
+
+        if (response.ok) {
+            // Actualizar el estado local
+            markAsCompleted(todoId);
+            console.log("Tarea marcada como completada con éxito:", todoId);
+        } else {
+            console.error("Error al marcar la tarea como completada");
+        }
+    } catch (error) {
+        console.error('Error de red:', error);
+    }
+};
+
+  // const handleCompleteTask = (todoId) => {
+  //   setIsCompleted((prevState) => ({
+  //     ...prevState,
+  //     [todoId]: !prevState[todoId], // Cambiar el estado de true a false y viceversa
+  //   }));
+  // };
+
+  // Función para cambiar el estado isCompleted de la tarea
+  // const handleCompleteTask = async (taskId) => {
+  //   try {
+  //     const response = await fetch(
+  //       `https://birsbane-numbat-zjcf.1.us-1.fl0.io/api/todo/${taskId}/complete`,
+  //       {
+  //         method: "PUT",
+  //         headers: { "Content-Type": "application/json" },
+  //       }
+  //     );
+
+  //     if (response.ok) {
+  //       console.log("Tarea completada con éxito");
+  //       // Actualizar el estado local o volver a cargar las tareas si es necesario
+  //     } else {
+  //       console.error("Error al completar la tarea");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error de red:", error);
+  //   }
+  // };
 
   return (
     <>
-    <div className="container">
-      <form className="container__task" onSubmit={TaskData}>
-        <input className="task__input"
-          type="text"
-          placeholder="Ingresa el Título de la tarea"
-          name="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input className="task__input"
-          type="text"
-          placeholder="Ingresa la descripción de la tarea"
-          name="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <input className="task__input"
-          type="date"
-          placeholder="Ingresa la fecha para finalizar"
-          name="finishDate"
-          value={finishDate}
-          onChange={(e) => setFinishDate(e.target.value)}
-        />
-        <input className="task__input-check"
-          type="checkbox"
-          name="isCompleted"
-          checked={isCompleted}
-          onChange={(e) => setIsCompleted(e.target.checked)}
-        />
-        {toDoError && <p className="error-message">{toDoError}</p>}
-        <input type="submit" value="Crear Tarea" className="task__btn" />
-      </form>
-    </div>
+      <div className="container">
+        <form className="container__task" onSubmit={TaskData}>
+          <input className="task__input"
+            type="text"
+            placeholder="Título de la tarea"
+            name="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <input className="task__input"
+            type="text"
+            placeholder="Descripción de la tarea"
+            name="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          <input className="task__input"
+            type="date"
+            placeholder="Ingresa la fecha para finalizar"
+            name="finishDate"
+            value={finishDate}
+            onChange={(e) => setFinishDate(e.target.value)}
+          />
+          <input className="task__input-check"
+            type="checkbox"
+            name="isCompleted"
+            checked={isCompleted}
+            onChange={(e) => setIsCompleted(e.target.checked)}
+          />
+          {toDoError && <p className="error-message">{toDoError}</p>}
+          <input type="submit" value="Crear Tarea" className="task__btn" />
+        </form>
+      </div>
 
-    <GetToDos/>
+      <GetToDos />
     </>
   );
 }

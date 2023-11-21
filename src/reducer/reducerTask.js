@@ -1,5 +1,6 @@
 export const initialState = {
     task: [],
+    completedTasks: [], //state para tareas completadas
 }
 export function reducer(init, action) {
     switch (action.type) {
@@ -28,6 +29,21 @@ export function reducer(init, action) {
         case "LOG_OUT":
             // Reinicia el estado cuando cierra sesión
             return initialState;
+
+        case 'MARK_AS_COMPLETED':
+        const completedTask = init.task.find(todo => todo._id === action.payload);
+        return {
+            ...init,
+            task: init.task.filter(todo => todo._id !== action.payload),
+            completedTasks: [...init.completedTasks, completedTask],
+        };
+        // case 'MARK_AS_COMPLETED':
+        //     const completedTask = init.task.find(todo => todo._id === action.payload);
+        //     return {
+        //         ...init,
+        //         task: init.task.filter(todo => todo._id !== action.payload),
+        //         completedTasks: [...init.completedTasks, completedTask],
+        //     };
         default:
             return init;
     }

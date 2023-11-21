@@ -2,7 +2,7 @@
     display: grid;
     place-items: center;
     width: 30%;
-    margin-top: 20px;
+    padding: 3px 2px 2px 60px;
 }
 .todo__container{
     max-width: 380px;
@@ -28,4 +28,7 @@
 }
 .todo__date{
     color: rgb(74, 42, 1);
+}
+.btn__todo{
+    margin: 8px;
 }
